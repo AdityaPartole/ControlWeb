@@ -1,6 +1,6 @@
 # ControlWeb
 
-![app](https://github.com/istefanis/controllio/blob/main/assets/img/app.png)
+![app](https://github.com/AdityaPartole/ControlWeb/blob/main/assets/img/app.png)
 
 ControlWeb is a web app which lets Control Systems engineers design & experiment with LTI (linear time-invariant) dynamical systems online.
 
@@ -11,7 +11,6 @@ So far, functionality has been implemented for:
 - the numerical computation of its time response plot
 - the numerical computation of its zeros/poles & some characteristic numbers, ex. bandwidth
 
-> _This is a web GUI tool. For a command-line one, check the [lti-freq-domain-toolbox](https://github.com/istefanis/lti-freq-domain-toolbox)_
 
 ## Motivation
 
@@ -22,22 +21,12 @@ The motivation behind ControlWeb is to create an open-source tool for studying C
 
 ## Technical details
 
-### Circuit simplification
-
-- A set of 6 simplication algorithms to compute analytically its overall transfer function
-
-![circuit simplification](https://github.com/istefanis/controllio/blob/main/assets/img/circuit-simplification.gif)
 
 ### Numerical algorithms
 
 - Polynomial complex roots: Weierstrass / Durand-Kerner algorithm
 - Laplace inversion: Talbot algorithm
 
-### Topology optimization
-
-- A stochastic algorithm to simplify the circuit's topology
-
-![topology optimization](https://github.com/istefanis/controllio/blob/main/assets/img/topology-optimization.gif)
 
 ### Ready-made components
 
@@ -48,7 +37,7 @@ The motivation behind ControlWeb is to create an open-source tool for studying C
 
 ### Online
 
-- The app is deployed [here](https://istefanis.github.io/controllio)
+- The app is deployed [here](https://adityapartole.github.io/ControlWeb/)
 
 ### Locally
 
@@ -80,8 +69,3 @@ In addition:
 - `\math\` contains the math services (ex. _complexAnalysisService_)
 - `\test\` contains the services' tests (ex. _plotsTests_), which can be executed from the main JS file _script.js_
 - `\util\` contains any general-purpose utility code & services (ex. _loggingService_)
-
-## License
-
-ControlWeb is distributed under the MIT License, included in the 'LICENCE.TXT' file.
-Copyright (C) 2023 Aditya Partole
