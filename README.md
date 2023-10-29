@@ -1,6 +1,7 @@
 # ControlWeb
 
-![app](https://github.com/AdityaPartole/ControlWeb/blob/main/assets/img/app.png)
+![app](https://github.com/AdityaPartole/ControlWeb/assets/142674497/5268d496-9a3b-48c3-b0aa-ca7ef9da1fc9)
+
 
 ControlWeb is a web app which lets Control Systems engineers design & experiment with LTI (linear time-invariant) dynamical systems online.
 
