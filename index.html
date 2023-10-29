@@ -1,0 +1,650 @@
+<!--
+ControlWeb · Open source web drafting table for studying control systems
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="ControlWeb is a web app which lets control systems engineers design & experiment with LTI dynamical systems online"
+    />
+    <title>
+      ControlWeb · Open source web drafting table for studying control systems
+    </title>
+    <link rel="shortcut icon" type="image/png" href="assets/img/favicon.png" />
+
+    <!-- icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css"
+      integrity="sha512-YFENbnqHbCRmJt5d+9lHimyEMt8LKSNTMLSaHjvsclnZGICeY/0KYEeiHwD1Ux4Tcao0h60tdcMv+0GljvWyHg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- plots lib -->
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/function-plot/1.23.2/function-plot.js"
+      integrity="sha512-Mt2z8Bi3iT3BwXeGZ42UC3Fa7AriMjH2rA3tuWrVRNK7Pg09xnSyCEs4Q2fSdTebQ88RuNrTo78YCLV03///Dw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <link rel="stylesheet" href="view/style/main.css" />
+    <script type="module" src="script.js"></script>
+
+    <noscript>
+      <section class="js-disabled-notification">
+        <h2>Please enable JavaScript in your browser to run ControlWeb!</h2>
+      </section>
+    </noscript>
+  </head>
+  <body>
+    <nav id="navbar">
+      <section class="ribbon-section app-title-section">
+        <header class="ribbon-section-header">
+          <h1>ControlWeb</h1>
+        </header>
+        <div class="ribbon-section-contents">
+          <a
+            class="navbar-button button-with-tooltip"
+            id="linkedin-button"
+            href="https://www.linkedin.com/in/aditya-partole-a81030241/"
+            target="_blank"
+          >
+            <i class="bi-linkedin"></i>
+            <p>LinkedIn</p>
+            <div class="tooltip">
+              <h5>LinkedIn</h5>
+              <p>Connect with Aditya Partole on LinkedIn</p>
+            </div>
+          </a>
+        </div>
+      </section>
+      <section class="ribbon-section">
+        <header class="ribbon-section-header">
+          <h2>File</h2>
+        </header>
+        <div class="ribbon-section-contents">
+          <button
+            class="navbar-button button-with-tooltip"
+            id="export-file-button"
+          >
+            <i class="bi-download"></i>
+            <p>Export</p>
+            <div class="tooltip">
+              <h5>Export file</h5>
+              <p>Export the current state as a .json file</p>
+            </div>
+          </button>
+          <button
+            class="navbar-button button-with-tooltip"
+            id="import-file-button"
+          >
+            <i class="bi-upload"></i>
+            <p>Import</p>
+            <div class="tooltip">
+              <h5>Import file</h5>
+              <p>
+                Import the state contained in a .json file, and replace the
+                current
+              </p>
+            </div>
+          </button>
+        </div>
+      </section>
+      <section class="ribbon-section">
+        <header class="ribbon-section-header">
+          <h2>State</h2>
+        </header>
+        <div class="ribbon-section-contents">
+          <button
+            class="navbar-button button-with-tooltip"
+            id="previous-button"
+          >
+            <i class="bi-skip-start"></i>
+            <p>Prev</p>
+            <div class="tooltip">
+              <h5>Previous state</h5>
+              <p>Go back to the previous state</p>
+              <p class="tooltip-expansion">Shortcut: Ctrl + Z</p>
+            </div>
+          </button>
+          <button class="navbar-button button-with-tooltip" id="next-button">
+            <i class="bi-skip-end"></i>
+            <p>Next</p>
+            <div class="tooltip">
+              <h5>Next state</h5>
+              <p>Go forward to the next state</p>
+              <p class="tooltip-expansion">Shortcut: Ctrl + Y</p>
+            </div>
+          </button>
+          <button
+            class="navbar-button button-with-tooltip hidden"
+            id="save-button"
+          >
+            <i class="bi-save"></i>
+            <p>Save</p>
+            <div class="tooltip">
+              <h5>Save state</h5>
+              <p>Save the current state to the browser's local storage</p>
+            </div>
+          </button>
+          <button
+            class="navbar-button button-with-tooltip hidden"
+            id="load-button"
+          >
+            <i class="bi-arrow-counterclockwise"></i>
+            <p>Load</p>
+            <div class="tooltip">
+              <h5>Load state</h5>
+              <p>
+                Load a saved state from the browser's local storage, and replace
+                the current
+              </p>
+            </div>
+          </button>
+        </div>
+      </section>
+      <section class="ribbon-section">
+        <header class="ribbon-section-header">
+          <h2>Design</h2>
+        </header>
+        <div class="ribbon-section-contents">
+          <button class="navbar-button button-with-tooltip" id="tf-button">
+            <i class="bi-card-text"></i>
+            <p>Tf</p>
+            <div class="tooltip">
+              <h5>Transfer function</h5>
+              <p>Create a new tf element</p>
+              <p class="tooltip-expansion">
+                If using a non-touch device, after clicking this button, move
+                your pointer over the canvas, and then click again to position
+                the tf
+              </p>
+              <p class="tooltip-expansion">
+                Finally, adjust the tf coefficients via the window that opens
+              </p>
+            </div>
+          </button>
+          <button class="navbar-button button-with-tooltip" id="adder-button">
+            <i class="bi-plus-circle"></i>
+            <p>Adder</p>
+            <div class="tooltip">
+              <h5>Adder</h5>
+              <p>Create a new adder element</p>
+              <p class="tooltip-expansion">
+                If using a non-touch device, after clicking this button, move
+                your pointer over the canvas, and then click again to position
+                the adder
+              </p>
+            </div>
+          </button>
+          <button
+            class="navbar-button button-with-tooltip"
+            id="connection-button"
+          >
+            <i class="bi-bezier2"></i>
+            <p>Connection</p>
+            <div class="tooltip">
+              <h5>Connection</h5>
+              <p>Create a new connection between two elements</p>
+              <p class="tooltip-expansion">
+                After clicking this button, first click on the starting element,
+                and then on the ending element
+              </p>
+              <p class="tooltip-expansion">
+                The connection will not be created if it already exists. Also,
+                the ending element may be adjusted without affecting the result
+              </p>
+            </div>
+          </button>
+          <button
+            class="navbar-button button-with-tooltip"
+            id="ready-made-tf-button"
+          >
+            <i class="bi-cart"></i>
+            <p>Ready-made</p>
+            <div class="tooltip">
+              <h5>Ready-made transfer function</h5>
+              <p>
+                Select from a list and then insert to the canvas a predefined
+                tf, such as a utility element or a controller
+              </p>
+              <p class="tooltip-expansion">
+                If using a non-touch device, after selecting the tf, move your
+                pointer over the canvas, and then click again to position it
+              </p>
+            </div>
+          </button>
+          <button class="navbar-button button-with-tooltip" id="delete-button">
+            <i class="bi-x-square"></i>
+            <p>Delete</p>
+            <div class="tooltip">
+              <h5>Delete</h5>
+              <p>Delete the selected elements, along with their connections</p>
+              <p class="tooltip-expansion">Shortcut: Delete</p>
+            </div>
+          </button>
+          <!-- to be displayed only for non-mobile devices -->
+          <button
+            class="navbar-button button-with-tooltip hidden"
+            id="delete-all-button"
+          >
+            <i class="bi-trash3"></i>
+            <p>Delete all</p>
+            <div class="tooltip">
+              <h5>Delete all</h5>
+              <p>
+                Delete all elements, along with their connections (clear canvas)
+              </p>
+            </div>
+          </button>
+        </div>
+      </section>
+      <section class="ribbon-section">
+        <header class="ribbon-section-header">
+          <h2>Optimize</h2>
+        </header>
+        <div
+          class="ribbon-section-contents"
+          id="optimize-topology-button-container"
+        >
+          <button
+            class="navbar-button button-with-tooltip"
+            id="optimize-topology-button"
+          >
+            <i class="bi-bounding-box-circles" id="optimize-topology-icon"></i>
+            <p>Topology</p>
+            <div class="tooltip">
+              <h5>Optimize topology</h5>
+              <p>
+                Run a stochastic algorithm to rearrange the elements over the
+                canvas and simplify the circuit's topology
+              </p>
+              <p class="tooltip-expansion">
+                The algorithm tries to minimize the total length of lines
+                connecting the elements
+              </p>
+            </div>
+          </button>
+        </div>
+      </section>
+      <section class="ribbon-section">
+        <header class="ribbon-section-header">
+          <h2>Simplify</h2>
+        </header>
+        <div class="ribbon-section-contents">
+          <button
+            class="navbar-button button-with-tooltip"
+            id="simplify-button"
+          >
+            <i class="bi-play"></i>
+            <p>Run</p>
+            <div class="tooltip">
+              <h5>Run simplification</h5>
+              <p>
+                Run a set of algorithms to simplify the circuit either
+                completely (by replacing it with an equivalent total tf) or as
+                much as possible
+              </p>
+              <p class="tooltip-expansion">
+                Revert a simplification via the 'Previous state' button
+              </p>
+            </div>
+          </button>
+          <div class="flex-column-center button-with-tooltip">
+            <input
+              type="range"
+              min="1"
+              value="5"
+              max="10"
+              id="speed-slider"
+              list="speed-slider-markers"
+            />
+            <datalist id="speed-slider-markers">
+              <option value="1" label="-"></option>
+              <label for="speed-slider">speed</label>
+              <option value="10" label="+"></option>
+            </datalist>
+            <div class="tooltip">
+              <h5>Simplification speed level</h5>
+              <p>
+                Adjust the speed of the animated circuit simplification process
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- to be displayed only for non-mobile devices -->
+      <section class="ribbon-section hidden" id="log-mode-slider-section">
+        <header class="ribbon-section-header">
+          <h2>Console log</h2>
+        </header>
+        <div class="ribbon-section-contents">
+          <div class="flex-column-center button-with-tooltip">
+            <input
+              type="range"
+              min="1"
+              value="1"
+              max="4"
+              id="log-mode-slider"
+              list="log-mode-markers"
+            />
+            <datalist id="log-mode-markers">
+              <option value="1" label="N/A"></option>
+              <option value="2" label="AL"></option>
+              <option value="3" label="SF"></option>
+              <option value="4" label="CP"></option>
+            </datalist>
+            <div class="tooltip">
+              <h5>Console log level</h5>
+              <p>
+                Adjust the volume of messages displayed at the browser's
+                developer tools console
+              </p>
+              <div class="tooltip-expansion">
+                <table>
+                  <tr>
+                    <th>Level</th>
+                    <th>Description</th>
+                  </tr>
+                  <tr>
+                    <td>N/A</td>
+                    <td>No messages are displayed</td>
+                  </tr>
+                  <tr>
+                    <td>AL</td>
+                    <td>
+                      Only messages regarding the algorithms run are displayed
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>SF</td>
+                    <td>
+                      Only messages regarding the algorithms run & the
+                      simplifications performed are displayed
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>CP</td>
+                    <td>
+                      Messages from all checkpoints are displayed (default)
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="ribbon-section">
+        <header class="ribbon-section-header">
+          <h2>Help</h2>
+        </header>
+        <div class="ribbon-section-contents">
+          <button
+            class="navbar-button button-with-tooltip"
+            id="user-guide-button"
+          >
+            <i class="bi-book"></i>
+            <p>User Guide</p>
+            <div class="tooltip">
+              <h5>User Guide</h5>
+              <p>Open the app's User Guide</p>
+            </div>
+          </button>
+        </div>
+      </section>
+    </nav>
+    <main class="grid">
+      <canvas id="canvas"></canvas>
+      <!-- elements to be added here -->
+    </main>
+    <section class="element-analysis-window hidden">
+      <div class="element-analysis-window-header">
+        <p>Transfer function</p>
+        <div>
+          <button
+            class="element-analysis-window-header-button hidden"
+            id="element-analysis-window-minimize-button"
+            title="Minimize window"
+          >
+            <i class="bi-arrows-collapse"></i>
+          </button>
+          <button
+            class="element-analysis-window-header-button hidden"
+            id="element-analysis-window-maximize-button"
+            title="Maximize window"
+          >
+            <i class="bi-arrows-expand"></i>
+          </button>
+          <button
+            class="element-analysis-window-header-button"
+            id="element-analysis-window-close-button"
+            title="Close window"
+          >
+            &times;
+          </button>
+        </div>
+      </div>
+      <div class="element-analysis-window-contents">
+        <form class="modify-element-value">
+          <div>
+            <p>Numer:</p>
+            <input
+              type="text"
+              placeholder="[1, 2, 3]"
+              id="update-element-numerator-input"
+              class="update-element-value-input"
+            />
+          </div>
+          <div>
+            <p>Denom:</p>
+            <input
+              type="text"
+              placeholder="[1, 2, 3]"
+              id="update-element-denominator-input"
+              class="update-element-value-input"
+            />
+          </div>
+          <button class="update-element-value-button" type="submit">
+            Update value
+          </button>
+        </form>
+        <section class="single-plot-container">
+          <div
+            class="element-analysis-window-tab-buttons tab-buttons-container"
+          >
+            <button
+              class="tab-button"
+              id="element-analysis-window-tab-button-1"
+              data-tab-id="1"
+            >
+              Bode plot
+            </button>
+            <button
+              class="tab-button"
+              id="element-analysis-window-tab-button-2"
+              data-tab-id="2"
+            >
+              Nyquist plot
+            </button>
+            <button
+              class="tab-button"
+              id="element-analysis-window-tab-button-3"
+              data-tab-id="3"
+            >
+              Time domain
+            </button>
+          </div>
+          <div class="element-analysis-window-tab-contents tab-contents">
+            <section
+              class="tab-content"
+              id="element-analysis-window-tab-content-1"
+            >
+              <div class="plot-container" id="plot-container-tab-1"></div>
+              <div id="characteristic-numbers-container">
+                <p id="filter-type"></p>
+                <div id="characteristic-numbers-grid"></div>
+              </div>
+            </section>
+            <section
+              class="tab-content"
+              id="element-analysis-window-tab-content-2"
+            >
+              <div class="plot-container" id="plot-container-tab-2"></div>
+              <div id="zeros-and-poles-container">
+                <div id="zeros-and-poles-grid"></div>
+              </div>
+            </section>
+            <section
+              class="tab-content"
+              id="element-analysis-window-tab-content-3"
+            >
+              <div class="plot-container" id="plot-container-tab-3"></div>
+              <div class="input-signal-radio-buttons">
+                <div>
+                  <label>
+                    <input
+                      type="radio"
+                      name="input-signal"
+                      value="impulse"
+                      id="input-signal-impulse-single-plot"
+                      checked
+                    />
+                    <p>Impulse</p>
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <input
+                      type="radio"
+                      name="input-signal"
+                      value="step"
+                      id="input-signal-step-single-plot"
+                    />
+                    <p>Step</p>
+                  </label>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+        <section class="multiple-plots-container hidden">
+          <section>
+            <div
+              class="element-analysis-window-tab-buttons tab-buttons-container"
+            >
+              <button
+                class="tab-button"
+                id="element-analysis-window-tab-button-1"
+                data-tab-id="1"
+              >
+                Bode plot
+              </button>
+            </div>
+            <div class="element-analysis-window-tab-contents tab-contents">
+              <section
+                class="tab-content"
+                id="element-analysis-window-tab-content-1"
+              >
+                <div class="plot-container" id="plot-container-tab-1"></div>
+                <div id="characteristic-numbers-container">
+                  <p id="filter-type"></p>
+                  <div id="characteristic-numbers-grid"></div>
+                </div>
+              </section>
+            </div>
+          </section>
+          <section>
+            <div
+              class="element-analysis-window-tab-buttons tab-buttons-container"
+            >
+              <button
+                class="tab-button"
+                id="element-analysis-window-tab-button-2"
+                data-tab-id="2"
+              >
+                Nyquist plot
+              </button>
+            </div>
+            <div class="element-analysis-window-tab-contents tab-contents">
+              <section
+                class="tab-content"
+                id="element-analysis-window-tab-content-2"
+              >
+                <div class="plot-container" id="plot-container-tab-2"></div>
+                <div id="zeros-and-poles-container">
+                  <div id="zeros-and-poles-grid"></div>
+                </div>
+              </section>
+            </div>
+          </section>
+          <section>
+            <div
+              class="element-analysis-window-tab-buttons tab-buttons-container"
+            >
+              <button
+                class="tab-button"
+                id="element-analysis-window-tab-button-3"
+                data-tab-id="3"
+              >
+                Time domain
+              </button>
+            </div>
+            <div class="element-analysis-window-tab-contents tab-contents">
+              <section
+                class="tab-content"
+                id="element-analysis-window-tab-content-3"
+              >
+                <div class="plot-container" id="plot-container-tab-3"></div>
+                <div class="input-signal-radio-buttons">
+                  <div>
+                    <label>
+                      <input
+                        type="radio"
+                        name="input-signal"
+                        value="impulse"
+                        id="input-signal-impulse-multiple-plots"
+                        checked
+                      />
+                      <p>Impulse</p>
+                    </label>
+                  </div>
+                  <div>
+                    <label
+                      ><input
+                        type="radio"
+                        name="input-signal"
+                        value="step"
+                        id="input-signal-step-multiple-plots"
+                      />
+                      <p>Step</p>
+                    </label>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </section>
+        </section>
+      </div>
+    </section>
+    <section class="popup-window hidden">
+      <div class="popup-window-header">
+        <p>Popup window</p>
+        <button class="popup-window-close-button">&times;</button>
+      </div>
+      <div class="popup-window-contents-container">
+        <div class="popup-window-contents">
+          <!-- contents to be added here -->
+        </div>
+      </div>
+    </section>
+    <section class="page-overlay hidden"></section>
+  </body>
+</html>
