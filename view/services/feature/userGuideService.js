@@ -49,7 +49,6 @@ const init = function () {
         <li>runs on the browser without any installation, is fast and mobile-friendly</li>
         <li>is written in a widely-used programming language (vanilla Javascript), and can be easily extended</li>
       </ul>
-      
     </section>
     <section class="tab-content" id="popup-window-tab-content-2">
       <h3>Modelling a dynamical system</h3>
@@ -80,6 +79,7 @@ const init = function () {
         <li>PD controller 
         <li>PID controller 
       </ul>
+
       <p>These are defined by specifying the proportional (Kp), integral (Ki) and/or derivative (Kd) gains respectively. Simple analytical transfer function computations can also be performed without fixing these parameters.</p>
     </section> 
     <section class="tab-content" id="popup-window-tab-content-4">
