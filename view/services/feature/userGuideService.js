@@ -49,8 +49,7 @@ const init = function () {
         <li>runs on the browser without any installation, is fast and mobile-friendly</li>
         <li>is written in a widely-used programming language (vanilla Javascript), and can be easily extended</li>
       </ul>
-      <h3>License</h3>
-      <p>ControlWeb is licensed under the MIT license.</p>
+      
     </section>
     <section class="tab-content" id="popup-window-tab-content-2">
       <h3>Modelling a dynamical system</h3>
