@@ -97,7 +97,7 @@ const init = function () {
       <p>The state contained in the .json file imported will replace the current state:</p>
       <div class="popup-window-row-container">
         <i class="bi-exclamation-triangle"></i>
-        <p>Import only .json files directly exported by Controllio, or manually crafted .json files of the same format!</p>
+        <p>Import only .json files directly exported by ControlWeb, or manually crafted .json files of the same format!</p>
       </div>
       <div class="flex-row-center">
         <label for="popup-window-input-button">
